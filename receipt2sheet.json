@@ -1,0 +1,409 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.photo[3].file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "8b5ec487-6771-4f20-b918-0280d2144950",
+      "name": "Get a file",
+      "webhookId": "ef8c7882-4d0a-4cc0-bece-57c217afa18a",
+      "credentials": {
+        "telegramApi": {
+          "id": "7KPBuL8RZ6Xk2UK4",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4772d033-a07d-44ab-83c4-1e37c51c8d05",
+      "name": "Telegram Trigger",
+      "webhookId": "5bef82e3-eb92-481d-b8d2-385a9dee8c3c",
+      "credentials": {
+        "telegramApi": {
+          "id": "7KPBuL8RZ6Xk2UK4",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ 'Analyze this receipt image and extract all relevant information including vendor name, date, total amount, items purchased, and any other important details. Image data: ' + JSON.stringify($json) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a receipt data extraction assistant. Extract structured data from receipt images with high accuracy. Return all monetary values as numbers without currency symbols. Format dates as YYYY-MM-DD."
+        }
+      },
+      "id": "b5da6875-20ce-4eee-92c7-8f9a5a64281e",
+      "name": "Extract Receipt Data",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        448,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-5-nano"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "c4077473-c721-489e-bc37-a587cadc831e",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        416,
+        224
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "DeFCHLqVRyKK2BxO",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\"vendor\": \"string\", \"date\": \"string\", \"total_amount\": \"number\", \"currency\": \"string\", \"items\": [{\"name\": \"string\", \"quantity\": \"number\"}], \"category\": \"string\"}"
+      },
+      "id": "d8fb3d07-d868-4cd4-8df7-da047c1c3ab2",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        592,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1kNp-b9qT-VstQ21fDBK_PMlE91hIHNJMzF911kVU-c4",
+          "mode": "list",
+          "cachedResultName": "Receipts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kNp-b9qT-VstQ21fDBK_PMlE91hIHNJMzF911kVU-c4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kNp-b9qT-VstQ21fDBK_PMlE91hIHNJMzF911kVU-c4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "vendor",
+              "displayName": "vendor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "total_amount",
+              "displayName": "total_amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "currency",
+              "displayName": "currency",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "items",
+              "displayName": "items",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "drive_link",
+              "displayName": "drive_link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "2b317c0c-4db2-4b76-86a1-3373afc146d4",
+      "name": "Insert to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        768,
+        240
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "32jsWWCiz1B5KoSW",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "vendor",
+              "value": "={{ $('Extract Receipt Data').item.json.output.vendor }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "date",
+              "value": "={{ $('Extract Receipt Data').item.json.output.date }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "total_amount",
+              "value": "={{ $('Extract Receipt Data').item.json.output.total_amount }}",
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "currency",
+              "value": "={{ $('Extract Receipt Data').item.json.output.currency }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "category",
+              "value": "={{ $('Extract Receipt Data').item.json.output.category }}",
+              "type": "string"
+            },
+            {
+              "id": "id-6",
+              "name": "items",
+              "value": "={{ JSON.stringify($('Extract Receipt Data').item.json.output.items) }}",
+              "type": "string"
+            },
+            {
+              "id": "id-7",
+              "name": "timestamp",
+              "value": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "263448f5-35ea-4293-821b-18a97a2c8bc0",
+      "name": "Prepare Sheet Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ '✅ Receipt processed successfully!\\n\\nVendor: ' + $('Prepare Sheet Data').item.json.vendor + '\\nDate: ' + $('Prepare Sheet Data').item.json.date + '\\nTotal: ' + $('Prepare Sheet Data').item.json.currency + ' ' + $('Prepare Sheet Data').item.json.total_amount + '\\nCategory: ' + $('Prepare Sheet Data').item.json.category + '\\n\\nItems:\\n' + $('Extract Receipt Data').item.json.output.items.map((item, i) => (i + 1) + '. ' + item.name + ' (Qty: ' + item.quantity + ')').join('\\n') + '\\n\\n📊 View in Google Sheets:\\nhttps://docs.google.com/spreadsheets/d/1kNp-b9qT-VstQ21fDBK_PMlE91hIHNJMzF911kVU-c4/edit' }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "33d5083e-720f-440f-86bf-d7baf3699526",
+      "name": "Send Confirmation",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1008,
+        240
+      ],
+      "webhookId": "86f6de1a-25cf-4d82-a528-5dd11abef3ec",
+      "credentials": {
+        "telegramApi": {
+          "id": "7KPBuL8RZ6Xk2UK4",
+          "name": "Telegram account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Extract Receipt Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Extract Receipt Data",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Extract Receipt Data",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Receipt Data": {
+      "main": [
+        [
+          {
+            "node": "Prepare Sheet Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Send Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Sheet Data": {
+      "main": [
+        [
+          {
+            "node": "Insert to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1
+  },
+  "versionId": "1da6d30e-2f21-4b05-8e67-8e0a353bdf85",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "401575bfda259b56aa6349c0b02c20c2f187ec4c8f0d72b63b17126cab87e07b"
+  },
+  "id": "COwLtc7Ol4OaHNuSEZDTt",
+  "tags": []
+}
