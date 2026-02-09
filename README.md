@@ -29,8 +29,11 @@ This project implements an automated pipeline that ingests receipt images via Te
 
 ## Architecture
 <img width="797" height="363" alt="Screenshot 2026-02-09 at 21 58 21" src="https://github.com/user-attachments/assets/24fbbc2a-273c-4edc-804e-4771596ef753" />
+
 Telegram → n8n → LLM (Structured Extraction) → Google Sheets → Telegram
 
+## Demo
+![Uploading Screenshot 2026-02-09 at 21.59.38.png…]()
 
 ---
 
