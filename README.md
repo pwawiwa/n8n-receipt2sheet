@@ -34,8 +34,6 @@ Telegram → n8n → LLM (Structured Extraction) → Google Sheets → Telegram
 
 ## Demo
 <img width="374" height="715" alt="Screenshot 2026-02-09 at 22 01 20" src="https://github.com/user-attachments/assets/3e87b18f-b343-4d70-81c2-0b5993c59ad8" />
-<img width="374" height="715" alt="Screenshot 2026-02-09 at 22 01 20" src="https://github.com/user-attachments/assets/3e87b18f-b343-4d70-81c2-0b5993c59ad8" />
-
 
 ---
 
